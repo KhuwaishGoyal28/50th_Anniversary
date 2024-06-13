@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>50th Anniversary Celebration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            text-align: center;
+            background: none; /* Remove the background gradient */
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Video as background */
+        video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            transform: translate(-50%, -50%);
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2em;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 10vh auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            position: relative;
+            z-index: 1; /* Ensure content appears above the video */
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4em;
+            color: #FFD700;
+            text-shadow: 3px 3px 5px #000;
+            margin-bottom: 0.5em;
+        }
+
+        p {
+            font-size: 1.5em;
+            color: #4CAF50;
+            margin-bottom: 1.5em;
+        }
+
+        .slideshow-container {
+            max-width: 100%;
+            position: relative;
+            margin: auto;
+            z-index: 2; /* Ensure slideshow appears above the content */
+        }
+
+        .slides {
+            display: none;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slides img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .prev, .next {
+            cursor: pointer;
+            position: default;
+            top: 50%;
+            width: auto;
+            margin-top: -22px;
+            padding: 5px;
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+            transition: 0.6s ease;
+            border-radius: 0 1.5px 1.5px 0;
+            user-select: none;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .dot-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .dot {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+        .active, .dot:hover {
+            background-color: #717171;
+        }
+        .message-box {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s;
+        }
+        .message-box.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .message-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s;
+        }
+        .message-content h2 {
+            margin: 0;
+            font-size: 2em;
+            color: #4CAF50;
+        }
+        .message-content p {
+            margin: 10px 0;
+        }
+        .close-btn {
+            background-color: #FF69B4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        .close-btn:hover {
+            background-color: #FF1493;
+        }
+        .close-btn:active {
+            background-color: #C71585;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            p {
+                font-size: 1.2em;
+            }
+            .prev, .next {
+                font-size: 14px;
+                padding: 12px;
+            }
+        }
+        .btn-container {
+            margin: 1em 0;
+        }
+        .btn-container button {
+            background-color: #FF69B4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1em;
+            margin: 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-container button:hover {
+            background-color: #FF1493;
+        }
+        .btn-container button:active {
+            background-color: #C71585;
+        }
+
+        /* Rest of your styles remain unchanged */
+    </style>
+</head>
+<body>
+    <video autoplay muted loop>
+        <source src="vidio.mp4" type="video/mp4">
+    </video>
+    <audio id="backgroundAudio">
+        <source src="ring.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="content">
+        <h1>Happy 50th Anniversary!</h1>
+        <p>Congratulations on reaching this amazing milestone.</p>
+
+        <div class="slideshow-container">
+            <div class="slides">
+                <img src="1st.png" alt="Slide 1">
+            </div>
+            <div class="slides">
+                <img src="2nd.png" alt="Slide 2">
+            </div>
+            <div class="slides">
+                <img src="3rd.png" alt="Slide 3">
+            </div>
+            <div class="slides">
+                <img src="4th.png" alt="Slide 4">
+            </div>
+            <div class="slides">
+                <img src="5th.png" alt="Slide 5">
+            </div>
+            <div class="slides">
+                <img src="6th.png" alt="Slide 6">
+            </div>
+            <div class="slides">
+                <img src="7th.png" alt="Slide 7">
+            </div>
+            <div class="slides">
+                <img src="8th.png" alt="Slide 8">
+            </div>
+            <div class="slides">
+                <img src="9th.png" alt="Slide 9">
+            </div>
+            <div class="slides">
+                <img src="10th.png" alt="Slide 10">
+            </div>
+            <div class="slides">
+                <img src="11th.png" alt="Slide 11">
+            </div>
+            <div class="slides">
+                <img src="12th.png" alt="Slide 12">
+            </div>
+            <div class="slides">
+                <img src="13th.png" alt="Slide 13">
+            </div>
+            <div class="slides">
+                <img src="14th.png" alt="Slide 14">
+            </div>
+            <div class="slides">
+                <img src="15th.png" alt="Slide 15">
+            </div>
+            <div class="slides">
+                <img src="16th.png" alt="Slide 16">
+            </div>
+            <div class="slides">
+                <img src="17th.png" alt="Slide 17">
+            </div>
+            <div class="slides">
+                <img src="18th.png" alt="Slide 18">
+            </div>
+            <div class="slides">
+                <img src="19th.png" alt="Slide 19">
+            </div>
+            <div class="slides">
+                <img src="20th.png" alt="Slide 20">
+            </div>
+            <div class="slides">
+                <img src="21st.png" alt="Slide 21">
+            </div>
+            <div class="slides">
+                <img src="22nd.png" alt="Slide 22">
+            </div>
+            <div class="slides">
+                <img src="23rd.png" alt="Slide 23">
+            </div>
+            <div class="slides">
+                <img src="24th.png" alt="Slide 24">
+            </div>
+            <div class="slides">
+                <img src="25th.png" alt="Slide 25">
+            </div>
+            <div class="slides">
+                <img src="26th.png" alt="Slide 26">
+            </div>
+            <div class="slides">
+                <img src="27th.png" alt="Slide 27">
+            </div>
+            <div class="slides">
+                <img src="28th.png" alt="Slide 28">
+            </div>
+            <div class="slides">
+                <img src="29th.png" alt="Slide 29">
+            </div>
+            <div class="slides">
+                <img src="30th.png" alt="Slide 30">
+            </div>
+            <div class="slides">
+                <img src="31st.png" alt="Slide 31">
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+        <div class="dot-container">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+            <span class="dot" onclick="currentSlide(5)"></span>
+            <span class="dot" onclick="currentSlide(6)"></span>
+            <span class="dot" onclick="currentSlide(7)"></span>
+            <span class="dot" onclick="currentSlide(8)"></span>
+            <span class="dot" onclick="currentSlide(9)"></span>
+            <span class="dot" onclick="currentSlide(10)"></span>
+            <span class="dot" onclick="currentSlide(11)"></span>
+            <span class="dot" onclick="currentSlide(12)"></span>
+            <span class="dot" onclick="currentSlide(13)"></span>
+            <span class="dot" onclick="currentSlide(14)"></span>
+            <span class="dot" onclick="currentSlide(15)"></span>
+            <span class="dot" onclick="currentSlide(16)"></span>
+            <span class="dot" onclick="currentSlide(17)"></span>
+            <span class="dot" onclick="currentSlide(18)"></span>
+            <span class="dot" onclick="currentSlide(19)"></span>
+            <span class="dot" onclick="currentSlide(20)"></span>
+            <span class="dot" onclick="currentSlide(21)"></span>
+            <span class="dot" onclick="currentSlide(22)"></span>
+            <span class="dot" onclick="currentSlide(23)"></span>
+            <span class="dot" onclick="currentSlide(24)"></span>
+            <span class="dot" onclick="currentSlide(25)"></span>
+            <span class="dot" onclick="currentSlide(26)"></span>
+            <span class="dot" onclick="currentSlide(27)"></span>
+            <span class="dot" onclick="currentSlide(28)"></span>
+            <span class="dot" onclick="currentSlide(29)"></span>
+            <span class="dot" onclick="currentSlide(30)"></span>
+            <span class="dot" onclick="currentSlide(31)"></span>
+        </div>
+    </div>
+
+    <div class="message-box" id="welcomeMessageBox">
+        <div class="message-content">
+            <h2>Welcome!</h2>
+            <p>We're delighted to have you here for this joyous occasion. Enjoy the celebration!</p>
+            <button class="close-btn" onclick="closeMessage()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('welcomeMessageBox').classList.add('active');
+            startSlideShow();
+        });
+
+        function closeMessage() {
+            document.getElementById('welcomeMessageBox').classList.remove('active');
+            document.getElementById('backgroundAudio').play(); // Start playing the audio
+            startSlideShow(); // Start the slideshow after closing the message box
+        }
+
+        let slideIndex = 0;
+        let autoSlideTimeout;
+
+        function plusSlides(n) {
+            clearTimeout(autoSlideTimeout);
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            clearTimeout(autoSlideTimeout);
+            showSlides(slideIndex = n - 1);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("slides");
+            let dots = document.getElementsByClassName("dot");
+            if (n >= slides.length) { slideIndex = 0 }
+            if (n < 0) { slideIndex = slides.length - 1 }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex].style.display = "block";
+            dots[slideIndex].className += " active";
+            autoSlideTimeout = setTimeout(() => { showSlides(slideIndex += 1); }, 3000); // Change image every 3 seconds
+        }
+
+        function startSlideShow() {
+            showSlides(slideIndex);
+        }
+    </script>
+</body>
+</html>
